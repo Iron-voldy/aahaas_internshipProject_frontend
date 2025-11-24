@@ -5,14 +5,16 @@ This is the frontend application for the Aahaas Ecommerce platform, built with R
 ## Features
 
 - Modern, responsive UI with dark blue theme
-- Product listing with grid layout
+- YouTube video background in banner (autoplays)
+- Product listing with grid layout and sorting
+- Search and filter functionality
 - Smooth animations using AOS (Animate On Scroll)
-- Card hover animations
+- Card hover animations with smooth shadow transitions
 - Loading states with spinner
-- Cart functionality with counter
+- Cart functionality with counter and animated GIF modal
 - Responsive design for desktop and mobile
 - Header with navigation and search
-- Banner section with call-to-action
+- Banner section with video background and call-to-action
 - Footer with social media links
 
 ## Prerequisites
@@ -26,8 +28,8 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Iron-voldy/aahaas_internship_task.git
-cd aahaas_internship_project/product-frontend-react
+git clone https://github.com/Iron-voldy/aahaas_internshipProject_frontend.git
+cd aahaas_internshipProject_frontend
 ```
 
 ### 2. Install Dependencies
@@ -56,13 +58,13 @@ Before running the frontend, make sure the Laravel backend is running:
 
 **Terminal 1 - Backend:**
 ```bash
-cd ../product-api-laravel
+cd ../aahaas_internshipProject_backend
 php artisan serve
 ```
 
 **Terminal 2 - Frontend:**
 ```bash
-cd product-frontend-react
+cd aahaas_internshipProject_frontend
 npm run dev
 ```
 
@@ -72,7 +74,7 @@ The application will be available at `http://localhost:5173`
 
 **Step 1 - Start Backend (Terminal 1):**
 ```bash
-cd product-api-laravel
+cd aahaas_internshipProject_backend
 php artisan migrate:fresh    # First time only
 php artisan db:seed           # First time only
 php artisan serve             # Runs at http://localhost:8000
@@ -80,7 +82,7 @@ php artisan serve             # Runs at http://localhost:8000
 
 **Step 2 - Start Frontend (Terminal 2):**
 ```bash
-cd product-frontend-react
+cd aahaas_internshipProject_frontend
 npm run dev                   # Runs at http://localhost:5173
 ```
 
@@ -105,21 +107,23 @@ npm run preview
 ## Project Structure
 
 ```
-product-frontend-react/
+aahaas_internshipProject_frontend/
 ├── src/
+│   ├── assets/
+│   │   └── addToCart_gif.gif   # Add to cart success animation
 │   ├── components/
 │   │   ├── Header.jsx          # Navigation header with search and cart
-│   │   ├── Banner.jsx          # Hero banner section
-│   │   ├── Products.jsx        # Products listing with API integration
-│   │   ├── ProductCard.jsx     # Individual product card
+│   │   ├── Banner.jsx          # Hero banner with YouTube video background
+│   │   ├── Products.jsx        # Products listing with search, filter, sort
+│   │   ├── ProductCard.jsx     # Individual product card with animations
 │   │   ├── Loading.jsx         # Loading spinner component
 │   │   └── Footer.jsx          # Footer with social links
-│   ├── App.jsx                 # Main application component
+│   ├── App.jsx                 # Main app with cart and modal logic
 │   ├── main.jsx                # Application entry point
-│   └── index.css               # Global styles and Tailwind directives
+│   └── index.css               # Global styles and custom animations
 ├── public/
 ├── package.json
-└── tailwind.config.js          # Tailwind CSS configuration
+└── tailwind.config.js          # Tailwind CSS with custom dark-blue theme
 ```
 
 ## Tech Stack
@@ -189,23 +193,29 @@ The frontend fetches products from the Laravel backend API:
 - Mobile responsive menu
 
 ### Banner
-- Hero section with tagline
-- Call-to-action button
-- Statistics display
-- Smooth scroll to products
+- YouTube video background (autoplays muted)
+- Hero section with tagline on top of video
+- Call-to-action button with smooth scroll
+- Statistics display with backdrop blur effect
+- Dark overlay for text readability
 
 ### Products
-- Fetches products from API
-- Loading state with spinner
+- Fetches products from API with loading state
+- Real-time search and filter by name/description
+- Sort by name, price (low to high, high to low)
+- Product count display
 - Error handling with retry button
-- Grid layout (1-4 columns based on screen size)
+- Responsive grid layout (1-4 columns based on screen size)
+- Scroll animations with AOS library
 
 ### ProductCard
-- Product image with zoom effect
+- Product image with smooth zoom effect on hover
 - Product name and description
-- Price display
-- "Add to Cart" button
-- Hover animations
+- Price display with proper formatting
+- "Add to Cart" button with scale animation
+- Smooth hover animations with shadow transitions
+- Gradient overlay on image
+- Success modal with GIF animation when added to cart
 
 ### Footer
 - Brand information
