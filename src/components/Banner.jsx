@@ -24,6 +24,21 @@ const Banner = () => {
           </button>
         </div>
 
+        {/* YouTube Video */}
+        <div className="mt-12 max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+          <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ paddingBottom: '56.25%' }}>
+            <iframe
+              className="absolute top-0 left-0 w-full h-full"
+              src="https://www.youtube.com/embed/YGQBm9Mnad8?si=3ggBD5ZrucZsg9jS&autoplay=1&muted=1&loop=1&playlist=YGQBm9Mnad8"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+
         {/* Decorative Elements */}
         <div className="mt-16 flex justify-center space-x-8">
           <div className="text-center">
