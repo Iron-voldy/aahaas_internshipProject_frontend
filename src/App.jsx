@@ -5,10 +5,13 @@ import Header from './components/Header';
 import Banner from './components/Banner';
 import Products from './components/Products';
 import Footer from './components/Footer';
+import addToCartGif from './assets/addToCart_gif.gif';
 
 function App() {
   const [cartCount, setCartCount] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showCartAnimation, setShowCartAnimation] = useState(false);
+  const [addedProduct, setAddedProduct] = useState(null);
 
   useEffect(() => {
     AOS.init({
@@ -20,14 +23,14 @@ function App() {
 
   const handleAddToCart = (product) => {
     setCartCount(prev => prev + 1);
-    // Show a simple notification
-    const notification = document.createElement('div');
-    notification.className = 'fixed bottom-4 right-4 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 fade-in';
-    notification.textContent = `${product.name} added to cart!`;
-    document.body.appendChild(notification);
+    setAddedProduct(product);
+    setShowCartAnimation(true);
+
+    // Auto-close after 2.5 seconds
     setTimeout(() => {
-      notification.remove();
-    }, 3000);
+      setShowCartAnimation(false);
+      setAddedProduct(null);
+    }, 2500);
   };
 
   const handleSearchChange = (query) => {
@@ -49,6 +52,46 @@ function App() {
         />
       </main>
       <Footer />
+
+      {/* Add to Cart Success Animation Modal */}
+      {showCartAnimation && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm animate-fadeIn">
+          <div className="bg-dark-blue-800 rounded-2xl p-8 shadow-2xl max-w-md w-full mx-4 transform animate-scaleIn">
+            {/* GIF Animation */}
+            <div className="flex justify-center mb-4">
+              <img
+                src={addToCartGif}
+                alt="Adding to cart"
+                className="w-48 h-48 object-contain rounded-lg"
+              />
+            </div>
+
+            {/* Success Message */}
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-white mb-2">
+                Added to Cart! 🎉
+              </h3>
+              <p className="text-gray-300 mb-1">
+                {addedProduct?.name}
+              </p>
+              <p className="text-blue-400 font-semibold">
+                ${parseFloat(addedProduct?.price).toFixed(2)}
+              </p>
+            </div>
+
+            {/* Close button */}
+            <button
+              onClick={() => {
+                setShowCartAnimation(false);
+                setAddedProduct(null);
+              }}
+              className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold transition-all duration-200 hover:scale-105"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
