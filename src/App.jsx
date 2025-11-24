@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 
 function App() {
   const [cartCount, setCartCount] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     AOS.init({
@@ -29,12 +30,23 @@ function App() {
     }, 3000);
   };
 
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+  };
+
   return (
     <div className="min-h-screen bg-dark-blue-950">
-      <Header cartCount={cartCount} />
+      <Header
+        cartCount={cartCount}
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+      />
       <main>
         <Banner />
-        <Products onAddToCart={handleAddToCart} />
+        <Products
+          onAddToCart={handleAddToCart}
+          searchQuery={searchQuery}
+        />
       </main>
       <Footer />
     </div>
