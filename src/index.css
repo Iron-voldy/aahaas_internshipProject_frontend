@@ -32,12 +32,13 @@ body {
 
 /* Card Hover Animation */
 .product-card {
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .product-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(26, 117, 255, 0.3);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(26, 117, 255, 0.4), 0 0 20px rgba(26, 117, 255, 0.2);
 }
 
 /* Button Animation */
