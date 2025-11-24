@@ -50,13 +50,41 @@ Change `8000` to your backend port if needed.
 
 ## Running the Application
 
-Start the development server:
+### IMPORTANT: Start Backend First!
 
+Before running the frontend, make sure the Laravel backend is running:
+
+**Terminal 1 - Backend:**
 ```bash
+cd ../product-api-laravel
+php artisan serve
+```
+
+**Terminal 2 - Frontend:**
+```bash
+cd product-frontend-react
 npm run dev
 ```
 
 The application will be available at `http://localhost:5173`
+
+### Quick Start (Both Backend & Frontend)
+
+**Step 1 - Start Backend (Terminal 1):**
+```bash
+cd product-api-laravel
+php artisan migrate:fresh    # First time only
+php artisan db:seed           # First time only
+php artisan serve             # Runs at http://localhost:8000
+```
+
+**Step 2 - Start Frontend (Terminal 2):**
+```bash
+cd product-frontend-react
+npm run dev                   # Runs at http://localhost:5173
+```
+
+Now open your browser at `http://localhost:5173`
 
 ## Building for Production
 
