@@ -5,13 +5,28 @@ import Header from './components/Header';
 import Banner from './components/Banner';
 import Products from './components/Products';
 import Footer from './components/Footer';
+import CartModal from './components/CartModal';
 import addToCartGif from './assets/addToCart_gif.gif';
 
 function App() {
-  const [cartCount, setCartCount] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showCartAnimation, setShowCartAnimation] = useState(false);
   const [addedProduct, setAddedProduct] = useState(null);
+  const [showCartModal, setShowCartModal] = useState(false);
+
+  // Load cart from localStorage on component mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   useEffect(() => {
     AOS.init({
@@ -22,7 +37,21 @@ function App() {
   }, []);
 
   const handleAddToCart = (product) => {
-    setCartCount(prev => prev + 1);
+    // Check if product already in cart
+    const existingItem = cartItems.find(item => item.id === product.id);
+
+    if (existingItem) {
+      // Increase quantity
+      setCartItems(cartItems.map(item =>
+        item.id === product.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      ));
+    } else {
+      // Add new item with quantity 1
+      setCartItems([...cartItems, { ...product, quantity: 1 }]);
+    }
+
     setAddedProduct(product);
     setShowCartAnimation(true);
 
@@ -33,16 +62,49 @@ function App() {
     }, 2500);
   };
 
+  const handleRemoveFromCart = (productId) => {
+    setCartItems(cartItems.filter(item => item.id !== productId));
+  };
+
+  const handleUpdateQuantity = (productId, newQuantity) => {
+    if (newQuantity === 0) {
+      handleRemoveFromCart(productId);
+    } else {
+      setCartItems(cartItems.map(item =>
+        item.id === productId
+          ? { ...item, quantity: newQuantity }
+          : item
+      ));
+    }
+  };
+
+  const getTotalItems = () => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  const getTotalPrice = () => {
+    return cartItems.reduce((total, item) => total + (parseFloat(item.price) * item.quantity), 0);
+  };
+
   const handleSearchChange = (query) => {
     setSearchQuery(query);
+  };
+
+  const handleOpenCart = () => {
+    setShowCartModal(true);
+  };
+
+  const handleCloseCart = () => {
+    setShowCartModal(false);
   };
 
   return (
     <div className="min-h-screen bg-dark-blue-950">
       <Header
-        cartCount={cartCount}
+        cartCount={getTotalItems()}
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
+        onCartClick={handleOpenCart}
       />
       <main>
         <Banner />
@@ -52,6 +114,17 @@ function App() {
         />
       </main>
       <Footer />
+
+      {/* Cart Modal */}
+      {showCartModal && (
+        <CartModal
+          cartItems={cartItems}
+          onClose={handleCloseCart}
+          onRemove={handleRemoveFromCart}
+          onUpdateQuantity={handleUpdateQuantity}
+          totalPrice={getTotalPrice()}
+        />
+      )}
 
       {/* Add to Cart Success Animation Modal */}
       {showCartAnimation && (
